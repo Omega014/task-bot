@@ -1,10 +1,51 @@
-from flask import Flask, render_template
+import flask_login
+from flask import Flask, render_template, session, redirect, url_for
+from flask_login import LoginManager, login_user, login_required, logout_user
+
+from user import User
+
 app = Flask(__name__)
+
+# Login Manager
+login_manager = flask_login.LoginManager()
+login_manager.init_app(app)
+
+app.config['SECRET_KEY'] = 'omega014'
+
+
+def get_login_user():
+    if "user_id" not in session:
+        return None
+
 
 @app.route("/")
 def index():
-    return render_template('index.html')
+    user = session.get('user_id')
+    return render_template('index.html', user=user)
 
-app.config['SECRET_KEY'] = 'omega014'
+
+@app.route('/login', methods=['GET'])
+def form():
+    return render_template('login.html')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    user = User()
+    login_user(user)
+    return redirect(url_for('index'))
+
+
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+@login_manager.user_loader
+def load_user(user_id):
+        return User()
+
+
 if __name__ == "__main__":
     app.run(port=5000, debug=True, threaded=True)
