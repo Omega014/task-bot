@@ -5,6 +5,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
 import apps.models
+from apps.models import User
 from apps.database import init_db
 
 
