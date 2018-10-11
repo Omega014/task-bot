@@ -2,15 +2,27 @@ import flask_login
 from flask import Flask, render_template, session, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user
 
-from user import User
+from flask_sqlalchemy import SQLAlchemy
 
-app = Flask(__name__)
+import apps.models
+from apps.database import init_db
+
+
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = 'omega014'
+    app.config.from_object('apps.config.Config')
+
+    init_db(app)
+
+    return app
+
+app = create_app()
+
 
 # Login Manager
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
-
-app.config['SECRET_KEY'] = 'omega014'
 
 
 def get_login_user():
@@ -45,7 +57,3 @@ def logout():
 @login_manager.user_loader
 def load_user(user_id):
         return User()
-
-
-if __name__ == "__main__":
-    app.run(port=5000, debug=True, threaded=True)
