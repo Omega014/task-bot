@@ -1,7 +1,7 @@
-import flask_login
+import os
+
 from flask import Flask, render_template, session, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user
-
 from flask_sqlalchemy import SQLAlchemy
 
 import apps.models
@@ -9,7 +9,8 @@ from apps.database import init_db
 
 
 def create_app():
-    app = Flask(__name__)
+    template_dir = os.path.abspath('templates')
+    app = Flask(__name__, template_folder=template_dir)
     app.config['SECRET_KEY'] = 'omega014'
     app.config.from_object('apps.config.Config')
 
@@ -21,7 +22,7 @@ app = create_app()
 
 
 # Login Manager
-login_manager = flask_login.LoginManager()
+login_manager = LoginManager()
 login_manager.init_app(app)
 
 
