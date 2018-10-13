@@ -32,9 +32,9 @@ class Answer(db.Model):
     __tablename__ = 'answers'
 
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer)
-    question_id = db.Column(db.Integer)
-    text = db.Column(db.String(255), nullable=False)
+    user_id = db.Column(db.Integer, nullable=False)
+    question_id = db.Column(db.Integer, nullable=False)
+    text = db.Column(db.String(255))
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
