@@ -1,3 +1,4 @@
+import hashlib
 from datetime import datetime
 from apps.database import db
 
@@ -10,11 +11,15 @@ class User(db.Model, UserMixin):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     def get_id(self):
         return 1
+
+    def get_auth_token(self):
+        return unicode(hashlib.sha1(self.name + self.password).hexdigest())
 
 
 class Question(db.Model):
