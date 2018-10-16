@@ -57,6 +57,11 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route("/question")
+def question():
+    return render_template('question.html')
+
+
 @login_manager.user_loader
 def load_user(user_id):
         return User()
