@@ -1,0 +1,19 @@
+{
+  "name": "taskbot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "material-components-web": "^0.40.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github-omega:Omega014/taskbot.git"
+  },
+  "author": "",
+  "license": "ISC"
+}
