@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Mypage</h1>
+
+
+<h2>Group</h2>
+{% if group %}
+  {% for data in group %}
+    <li>{{ data }}</li>
+  {% endfor %}
+{% endif  %}
+
+{% endblock %}
+

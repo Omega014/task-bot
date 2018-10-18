@@ -48,7 +48,7 @@ def form():
 def login():
     user = User()
     login_user(user)
-    return redirect(url_for('index'))
+    return redirect(url_for('mypage'))
 
 
 @app.route("/logout")
@@ -57,9 +57,12 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route("/question")
-def question():
-    return render_template('question.html')
+@login_required
+@app.route("/mypage")
+def mypage():
+    user = session.get('user_id')
+    group = get_group(user)
+    return render_template('mypage.html', user=user, group=group)
 
 
 @login_manager.user_loader
