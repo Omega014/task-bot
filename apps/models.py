@@ -5,7 +5,7 @@ from apps.database import db
 from flask_login import UserMixin
 
 
-class User(db.Model, BaseDateModel, UserMixin):
+class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
 
@@ -22,7 +22,7 @@ class User(db.Model, BaseDateModel, UserMixin):
         return unicode(hashlib.sha1(self.name + self.password).hexdigest())
 
 
-class Question(db.Model, BaseDateModel):
+class Question(db.Model):
 
     __tablename__ = 'questions'
 
@@ -32,7 +32,7 @@ class Question(db.Model, BaseDateModel):
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
 
-class Answer(db.Model, BaseDateModel):
+class Answer(db.Model):
 
     __tablename__ = 'answers'
 
@@ -44,7 +44,7 @@ class Answer(db.Model, BaseDateModel):
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
 
-class Group(db.Model, BaseDateModel):
+class Group(db.Model):
 
     __tablename__ = 'group'
 
