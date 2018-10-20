@@ -54,5 +54,7 @@ class Group(db.Model):
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
-    def get_group(user):
-        pass
+    @classmethod
+    def get_group(cls, user):
+        gronp = cls.query.filter(cls.id==user_id)
+        return group
