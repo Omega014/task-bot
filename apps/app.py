@@ -5,7 +5,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
 import apps.models
-from apps.models import User
+from apps.models import User, Group, UserGroup
 from apps.database import init_db
 
 
@@ -61,7 +61,7 @@ def logout():
 @app.route("/mypage")
 def mypage():
     user = session.get('user_id')
-    group = get_group(user)
+    group = UserGroup.get_group(user)
     return render_template('mypage.html', user=user, group=group)
 
 
