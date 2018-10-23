@@ -6,7 +6,7 @@
 <h2>Group</h2>
 {% if group %}
   {% for data in group %}
-    <li>{{ data }}</li>
+    <li>{{ data.group.name }}</li>
   {% endfor %}
 {% endif  %}
 

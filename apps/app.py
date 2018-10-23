@@ -61,8 +61,8 @@ def logout():
 @app.route("/mypage")
 def mypage():
     user = session.get('user_id')
-    group = UserGroup.get_group(user)
-    return render_template('mypage.html', user=user, group=group)
+    user_group = User.query.get(user).user_group
+    return render_template('mypage.html', user=user, group=user_group)
 
 
 @login_manager.user_loader

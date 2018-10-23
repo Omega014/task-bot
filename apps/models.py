@@ -17,10 +17,6 @@ class UserGroup(db.Model):
     user = db.relationship('User')
     group = db.relationship('Group')
 
-    @classmethod
-    def get_group(cls, user):
-        pass
-
 
 class User(db.Model, UserMixin):
 
