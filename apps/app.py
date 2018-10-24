@@ -65,6 +65,13 @@ def mypage():
     return render_template('mypage.html', user=user, group=user_group)
 
 
+@login_required
+@app.route("/group/<group_id>")
+def grourp(group_id):
+    group = Group.query.get(group_id)
+    return render_template('group.html', group=group, users=group.users)
+
+
 @login_manager.user_loader
 def load_user(user_id):
         return User()

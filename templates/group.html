@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{group.name}}</h1>
+
+<div>Users</div>
+{% for user in users %}
+  <li>{{ user.name }}</li>
+{% endfor %}
+
+{% endblock %}
