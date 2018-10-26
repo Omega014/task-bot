@@ -18,6 +18,19 @@ class UserGroup(db.Model):
     group = db.relationship('Group')
 
 
+class QuestionGroup(db.Model):
+
+    __tablename__ = 'questions_group'
+
+    question_id = db.Column(db.Integer, db.ForeignKey('questions.id'), primary_key=True)
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), primary_key=True)
+    ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+
+    question = db.relationship('Question')
+    group = db.relationship('Group')
+
+
 class User(db.Model, UserMixin):
 
     __tablename__ = 'users'
@@ -51,6 +64,13 @@ class Question(db.Model):
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
+    group = db.relationship(
+        'Group',
+        secondary=UserGroup.__tablename__,
+        back_populates='questions',
+    )
+    question_group = db.relationship('QuestionGroup')
+
 
 class Answer(db.Model):
 
@@ -80,6 +100,13 @@ class Group(db.Model):
         back_populates='group',
     )
     user_group = db.relationship('UserGroup')
+
+    questions = db.relationship(
+        'Question',
+        secondary=UserGroup.__tablename__,
+        back_populates='group',
+    )
+    question_group = db.relationship('QuestionGroup')
 
     @classmethod
     def get_group(cls, user):
