@@ -5,7 +5,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
 import apps.models
-from apps.models import User, Group, UserGroup
+from apps.models import User, Group, UserGroup, Question
 from apps.database import init_db
 
 
@@ -69,7 +69,8 @@ def mypage():
 @app.route("/group/<group_id>")
 def grourp(group_id):
     group = Group.query.get(group_id)
-    return render_template('group.html', group=group, users=group.users)
+    questions = Question.query.filter_by(group_id=group.id).all()
+    return render_template('group.html', group=group, users=group.users, questions=questions)
 
 
 @login_manager.user_loader

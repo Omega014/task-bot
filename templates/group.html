@@ -8,4 +8,15 @@
   <li>{{ user.name }}</li>
 {% endfor %}
 
+
+<h1>Questions</h1>
+{% if questions %}
+{% for q in questions %}
+  <li>{{ q.title }}</li>
+{% endfor %}
+{% else %}
+<div>Please set some questions</div>
+{% endif %}
+<div>Edit</div>
+
 {% endblock %}
