@@ -48,7 +48,7 @@ class Question(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'))
+    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False))
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
