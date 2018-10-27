@@ -3,11 +3,10 @@
   <head>
     <meta charset="utf-8">
     <title>Taskbot</title>
-    <link rel="stylesheet" href="node_modules/material-components-web/dist/material-components-web.css">
   </head>
   <body>
     <header>
-    {% if not user %}<a href="/login">Login</a>{% else %}<a href="/logout">Logout</a>{% endif %}
+    {% if not session['user_id'] %}<a href="/login">Login</a>{% else %}<a href="/logout">Logout</a>{% endif %}
     </header>
   {% block content %}{% endblock %}
   </body>
