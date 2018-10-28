@@ -3,7 +3,7 @@
 <h1>Mypage</h1>
 
 
-<h2>Group</h2>
+<h2>Channels</h2>
 {% if channel %}
   {% for data in channel %}
   <li><a href="http://localhost:5000/channel/{{ data.channel.id }}" >{{ data.channel.name }}</a></li>
