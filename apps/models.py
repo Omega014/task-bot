@@ -5,17 +5,17 @@ from apps.database import db
 from flask_login import UserMixin
 
 
-class UserGroup(db.Model):
+class UserChannel(db.Model):
 
-    __tablename__ = 'users_group'
+    __tablename__ = 'users_channels'
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), primary_key=True)
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), primary_key=True)
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     user = db.relationship('User')
-    group = db.relationship('Group')
+    channel = db.relationship('Channel')
 
 
 class User(db.Model, UserMixin):
@@ -28,18 +28,18 @@ class User(db.Model, UserMixin):
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
-    group = db.relationship(
-        'Group',
-        secondary=UserGroup.__tablename__,
+    channel = db.relationship(
+        'Channel',
+        secondary=UserChannel.__tablename__,
         back_populates='users',
     )
-    user_group = db.relationship('UserGroup')
+    user_channel = db.relationship('UserChannel')
 
     def get_id(self):
         return 1
 
     def get_auth_token(self):
-        return unicode(hashlib.sha1(self.name + self.password).hexdigest())
+        return hashlib.sha1(self.name + self.password).hexdigest()
 
 
 class Question(db.Model):
@@ -48,7 +48,7 @@ class Question(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(255), nullable=False)
-    group_id = db.Column(db.Integer, db.ForeignKey('group.id'), nullable=False)
+    channel_id = db.Column(db.Integer, db.ForeignKey('channels.id'), nullable=False)
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
@@ -65,24 +65,22 @@ class Answer(db.Model):
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
 
-class Group(db.Model):
+class Channel(db.Model):
 
-    __tablename__ = 'group'
+    __tablename__ = 'channels'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50))
-    channel = db.Column(db.String(255))
+    name = db.Column(db.String(255))
     ctime = db.Column(db.DateTime, nullable=False, default=datetime.now)
     utime = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
 
     users = db.relationship(
         'User',
-        secondary=UserGroup.__tablename__,
-        back_populates='group',
+        secondary=UserChannel.__tablename__,
+        back_populates='channels',
     )
-    user_group = db.relationship('UserGroup')
+    user_channel = db.relationship('UserChannel')
 
     @classmethod
-    def get_group(cls, user):
-        gronp = cls.query.filter(cls.id==user_id)
-        return group
+    def get_channel(cls, user):
+        return cls.query.filter(cls.id==user.id)

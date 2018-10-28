@@ -2,10 +2,8 @@ import os
 
 from flask import Flask, render_template, session, redirect, url_for
 from flask_login import LoginManager, login_user, login_required, logout_user
-from flask_sqlalchemy import SQLAlchemy
 
-import apps.models
-from apps.models import User, Group, UserGroup, Question
+from apps.models import User, Channel, Question
 from apps.database import init_db
 
 
@@ -61,16 +59,23 @@ def logout():
 @app.route("/mypage")
 def mypage():
     user = session.get('user_id')
-    user_group = User.query.get(user).user_group
-    return render_template('mypage.html', user=user, group=user_group)
+    user_channel = User.query.get(user).user_channel
+    return render_template('mypage.html', user=user, channel=user_channel)
 
 
 @login_required
-@app.route("/group/<group_id>")
-def grourp(group_id):
-    group = Group.query.get(group_id)
-    questions = Question.query.filter_by(group_id=group.id).all()
-    return render_template('group.html', group=group, users=group.users, questions=questions)
+@app.route("/channel/<channel_id>")
+def grourp(channel_id):
+    channel = Channel.query.get(channel_id)
+    questions = Question.query.filter_by(channel_id=channel.id).all()
+    return render_template('channel.html', channel=channel, users=channel.users, questions=questions)
+
+
+@login_required
+@app.route("/channel/<channel_id>/question_edit")
+def question_index(channel_id):
+    channel = Channel.query.get(channel_id)
+    return render_template('question/edit.html', channel=channel)
 
 
 @login_manager.user_loader

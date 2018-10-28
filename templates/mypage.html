@@ -4,9 +4,9 @@
 
 
 <h2>Group</h2>
-{% if group %}
-  {% for data in group %}
-  <li><a href="http://localhost:5000/group/{{ data.group.id }}" >{{ data.group.name }}</a></li>
+{% if channel %}
+  {% for data in channel %}
+  <li><a href="http://localhost:5000/channel/{{ data.channel.id }}" >{{ data.channel.name }}</a></li>
   {% endfor %}
 {% endif  %}
 
