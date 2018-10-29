@@ -1,11 +1,12 @@
 import os
+from datetime import datetime
 
-from flask import Flask, render_template, session, redirect, url_for
+from flask import Flask, render_template, session, redirect, url_for, request
 from flask_login import LoginManager, login_user, login_required, logout_user
 
+from apps.forms import QuestionForm
 from apps.models import User, Channel, Question
-from apps.database import init_db
-
+from apps.database import init_db, db
 
 def create_app():
     template_dir = os.path.abspath('templates')
@@ -72,10 +73,20 @@ def grourp(channel_id):
 
 
 @login_required
-@app.route("/channel/<channel_id>/question_edit")
+@app.route("/channel/<channel_id>/question_edit", methods=['POST', 'GET'])
 def question_index(channel_id):
+    form = QuestionForm()
+
     channel = Channel.query.get(channel_id)
-    return render_template('question/edit.html', channel=channel)
+    if request.method == 'POST':
+        if form.validate_on_submit():
+            question = Question(title=request.form["title"],
+                                channel_id=channel_id,
+                                ctime=datetime.now(),
+                                utime=datetime.now())
+            db.session.add(question)
+            db.session.commit()
+    return render_template('question/edit.html', channel=channel, form=form)
 
 
 @login_manager.user_loader
