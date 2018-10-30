@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-from flask import Flask, render_template, session, redirect, url_for, request
+from flask import Flask, render_template, session, redirect, url_for, request, jsonify
 from flask_login import LoginManager, login_user, login_required, logout_user
 
 from apps.forms import QuestionForm
@@ -10,7 +10,7 @@ from apps.database import init_db, db
 
 def create_app():
     template_dir = os.path.abspath('templates')
-    app = Flask(__name__, template_folder=template_dir)
+    app = Flask(__name__, template_folder=template_dir, static_folder = "../../dist/static",)
     app.config['SECRET_KEY'] = 'omega014'
     app.config.from_object('apps.config.Config')
 
@@ -73,11 +73,23 @@ def grourp(channel_id):
 
 
 @login_required
+@app.route("/api/questions/<int:channel_id>')")
+def get_channels(channel_id):
+    channel = Channel.query.get(channel_id)
+    questions = Question.query.filter_by(channel_id=channel.id).all()
+    q_list = []
+    for q in Question.query.filter_by(channel_id=channel.id).all():
+        q_list.append({"id": q.id, "title": q.title})
+    return jsonify(result=q_list)
+
+
+@login_required
 @app.route("/channel/<channel_id>/question_edit", methods=['POST', 'GET'])
 def question_index(channel_id):
     form = QuestionForm()
-
     channel = Channel.query.get(channel_id)
+    return render_template('question/edit.html', channel=channel, form=form)
+
     if request.method == 'POST':
         if form.validate_on_submit():
             question = Question(title=request.form["title"],
