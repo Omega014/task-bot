@@ -66,7 +66,7 @@ def mypage():
 
 @login_required
 @app.route("/channel/<channel_id>")
-def grourp(channel_id):
+def channel(channel_id):
     channel = Channel.query.get(channel_id)
     questions = Question.query.filter_by(channel_id=channel.id).all()
     return render_template('channel.html', channel=channel, users=channel.users, questions=questions)
@@ -88,18 +88,18 @@ def get_channels(channel_id):
 def question_index(channel_id):
     form = QuestionForm()
     channel = Channel.query.get(channel_id)
-    return render_template('question/edit.html', channel=channel, form=form)
 
-    if request.method == 'POST':
-        if form.validate_on_submit():
-            question = Question(title=request.form["title"],
-                                channel_id=channel_id,
-                                ctime=datetime.now(),
-                                utime=datetime.now())
-            db.session.add(question)
-            db.session.commit()
-    return render_template('question/edit.html', channel=channel, form=form)
+    if request.method == 'GET':
+        return render_template('question/edit.html', channel=channel, form=form)
 
+    if form.validate_on_submit():
+        question = Question(title=request.form["title"],
+                            channel_id=channel_id,
+                            ctime=datetime.now(),
+                            utime=datetime.now())
+        db.session.add(question)
+        db.session.commit()
+    return redirect(url_for('channel', channel_id=channel_id))
 
 @login_manager.user_loader
 def load_user(user_id):
