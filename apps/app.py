@@ -35,6 +35,9 @@ def get_login_user():
 @app.route("/")
 def index():
     user = session.get('user_id')
+    if user:
+        channel = User.query.get(user).user_channel
+        return redirect(url_for('mypage', user=user, channel=channel))
     return render_template('index.html', user=user)
 
 
@@ -76,9 +79,9 @@ def channel(channel_id):
 @app.route("/api/questions/<int:channel_id>')")
 def get_channels(channel_id):
     channel = Channel.query.get(channel_id)
-    questions = Question.query.filter_by(channel_id=channel.id).all()
+    questions = Question.query.filter_by(channel_id=channel_id).all()
     q_list = []
-    for q in Question.query.filter_by(channel_id=channel.id).all():
+    for q in Question.query.filter_by(channel_id=channel_id).all():
         q_list.append({"id": q.id, "title": q.title})
     return jsonify(result=q_list)
 
@@ -86,12 +89,15 @@ def get_channels(channel_id):
 @login_required
 @app.route("/channel/<channel_id>/question_edit", methods=['POST', 'GET'])
 def question_index(channel_id):
+
     form = QuestionForm()
-    channel = Channel.query.get(channel_id)
-
     if request.method == 'GET':
-        return render_template('question/edit.html', channel=channel, form=form)
+        question = Question.query.filter_by(channel_id=channel_id).all()[0]
+        q_form = QuestionForm(obj=question)
+        q_form.populate_obj(question)
+        return render_template('question/edit.html', form=q_form)
 
+    # POST
     if form.validate_on_submit():
         question = Question(title=request.form["title"],
                             channel_id=channel_id,
