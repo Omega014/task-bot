@@ -60,7 +60,7 @@ class Channel(db.Model):
 
     @classmethod
     def get_channels(cls, user):
-        return cls.query.filter(cls.id==user.id)
+        return cls.query.filter(cls.id == user.id)
 
 
 class Question(db.Model):

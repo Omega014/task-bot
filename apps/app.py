@@ -8,9 +8,10 @@ from apps.forms import QuestionForm
 from apps.models import User, Channel, Question
 from apps.database import init_db, db
 
+
 def create_app():
     template_dir = os.path.abspath('templates')
-    app = Flask(__name__, template_folder=template_dir, static_folder = "../../dist/static",)
+    app = Flask(__name__, template_folder=template_dir, static_folder="../../dist/static",)
     app.config['SECRET_KEY'] = 'omega014'
     app.config.from_object('apps.config.Config')
 
@@ -72,14 +73,13 @@ def mypage():
 def channel(channel_id):
     channel = Channel.query.get(channel_id)
     questions = Question.query.filter_by(channel_id=channel.id).all()
-    return render_template('channel.html', channel=channel, users=channel.users, questions=questions)
+    return render_template('channel.html',
+                           channel=channel, users=channel.users, questions=questions)
 
 
 @login_required
 @app.route("/api/questions/<int:channel_id>')")
 def get_channels(channel_id):
-    channel = Channel.query.get(channel_id)
-    questions = Question.query.filter_by(channel_id=channel_id).all()
     q_list = []
     for q in Question.query.filter_by(channel_id=channel_id).all():
         q_list.append({"id": q.id, "title": q.title})
@@ -106,6 +106,7 @@ def question_index(channel_id):
         db.session.add(question)
         db.session.commit()
     return redirect(url_for('channel', channel_id=channel_id))
+
 
 @login_manager.user_loader
 def load_user(user_id):
