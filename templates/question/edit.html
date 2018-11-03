@@ -7,7 +7,12 @@
 <form method="POST">
   {{ form.csrf_token() }}
   <li>{{ form.title }}</li>
-  <button type="submit" name="action" value="save">Save</button>
+  <button class = "foo-button mdc-button" type="submit" name="action" value="save">Save</button>
 </form>
 
+
+<script>
+const button = document.querySelector(‘.foo-button’);
+mdc.ripple.MDCRipple.attachTo(button);
+</script>
 {% endblock %}
