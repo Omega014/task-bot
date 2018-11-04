@@ -44,6 +44,10 @@ def index():
 
 @app.route('/login', methods=['GET'])
 def form():
+    user = session.get('user_id')
+    if user:
+        channel = User.query.get(user).user_channel
+        return redirect(url_for('mypage', user=user, channel=channel))
     return render_template('login.html')
 
 
