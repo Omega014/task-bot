@@ -83,11 +83,16 @@ def channel(channel_id):
 
 @login_required
 @app.route("/api/questions/<int:channel_id>')")
-def get_channels(channel_id):
+def get_questions_api(channel_id):
     q_list = []
     for q in Question.query.filter_by(channel_id=channel_id).all():
         q_list.append({"id": q.id, "title": q.title})
     return jsonify(result=q_list)
+
+@app.route('/api/channels')
+def get_channels_api(user_id):
+    channels = User.query.get(user).user_channel
+    return jsonify(channels)
 
 
 @login_required
