@@ -96,28 +96,23 @@ def get_channels_api(user_id):
 
 
 @login_required
-@app.route("/channel/<channel_id>/question_edit", methods=['POST', 'GET'])
-def question_index(channel_id):
+@app.route("/channel/<channel_id>/q/<question_id>/edit", methods=['POST', 'GET'])
+def question_index(channel_id, question_id):
 
-    questions = Question.query.filter_by(channel_id=channel_id).all()
-    for num, qs in enumerate(questions, 1):
-        exec("form_%d = QuestionForm()" % (num))
+    question = Question.query.filter_by(id=question_id).one()
+    form = QuestionForm(obj=question)
+    form.populate_obj(question)
 
     if request.method == 'GET':
-        forms = []
-        for num, qs in enumerate(questions):
-            exec("form_%d = QuestionForm(obj=qs)" % (num))
-            exec("form_%d.populate_obj(qs)" % (num))
-            exec("forms.append(form_%d)" % (num))
-        return render_template('question/edit.html', forms=forms)
+        return render_template('question/edit.html', form=form)
 
     # POST
     if form.validate_on_submit():
-        question = Question(title=request.form["title"],
-                            channel_id=channel_id,
-                            ctime=datetime.now(),
-                            utime=datetime.now())
-        db.session.add(question)
+        # import pdb;pdb.set_trace()
+        if request.form.get("is_delete"):
+            db.session.delete(question)
+        else:
+            question.title = request.form["title"]
         db.session.commit()
     return redirect(url_for('channel', channel_id=channel_id))
 

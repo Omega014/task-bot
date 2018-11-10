@@ -1,8 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, HiddenField
+from wtforms import StringField, BooleanField
 from wtforms.validators import InputRequired
 
 
 class QuestionForm(FlaskForm):
-    id = HiddenField()
+    is_delete = BooleanField()
     title = StringField('Question',  [InputRequired()])
