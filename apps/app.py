@@ -99,12 +99,17 @@ def get_channels_api(user_id):
 @app.route("/channel/<channel_id>/question_edit", methods=['POST', 'GET'])
 def question_index(channel_id):
 
-    form = QuestionForm()
+    questions = Question.query.filter_by(channel_id=channel_id).all()
+    for num, qs in enumerate(questions, 1):
+        exec("form_%d = QuestionForm()" % (num))
+
     if request.method == 'GET':
-        question = Question.query.filter_by(channel_id=channel_id).all()[0]
-        q_form = QuestionForm(obj=question)
-        q_form.populate_obj(question)
-        return render_template('question/edit.html', form=q_form)
+        forms = []
+        for num, qs in enumerate(questions):
+            exec("form_%d = QuestionForm(obj=qs)" % (num))
+            exec("form_%d.populate_obj(qs)" % (num))
+            exec("forms.append(form_%d)" % (num))
+        return render_template('question/edit.html', forms=forms)
 
     # POST
     if form.validate_on_submit():
