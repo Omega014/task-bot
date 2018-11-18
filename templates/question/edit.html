@@ -6,7 +6,7 @@
 
 <form method="POST">
   {{ form.csrf_token() }}
-  <li>{{ form.title }}</li>
+  <li>{{ form.title }} {{form.is_delete}}</li>
   <button class = "foo-button mdc-button" type="submit" name="action" value="save">Save</button>
 </form>
 

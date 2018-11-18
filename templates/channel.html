@@ -12,12 +12,10 @@
 <h1>Questions</h1>
 {% if questions %}
   {% for q in questions %}
-    <li>{{ q.title }}</li>
+  <li>{{ q.title }} <button><a href="http://localhost:5000/channel/{{channel.id}}/q/{{q.id }}/edit">Edit</a></button></li>
   {% endfor %}
 {% else %}
   <div>Please set some questions</div>
 {% endif %}
-
-<div><a href="http://localhost:5000/channel/{{ channel.id }}/question_edit">Edit</a></div>
 
 {% endblock %}
