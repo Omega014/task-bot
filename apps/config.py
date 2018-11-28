@@ -15,5 +15,14 @@ class BaseConfig:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = False
 
+    # Slack
+    SLACK_AUTH_URL = "https://slack.com/oauth/authorize?"
+    SLACK_AUTH_ACCESS_URL = "info: https://slack.com/api/oauth.access?"
+    CLIENT_ID = os.getenv('CLIENT_ID', '')
+    CLIENT_SECRET = os.getenv('CLIENT_SECRET', '')
+    SCOPE = "identify"
+    TEAM_NAME = os.getenv('TEAM_NAME', '')
+    REDIRECT_URI = os.getenv('REDIRECT_URI' + '/mypage', 'http://locaclhost:5000/mypage')
+    STATE = ""
 
 Config = BaseConfig
